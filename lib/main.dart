@@ -10,13 +10,11 @@ class FloripaTV extends StatefulWidget {
 
 class _FloripaTVState extends State<FloripaTV> {
   final canais = [
-    {"nome": "Big Buck Bunny - Filmes", "logo": "🎬", "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
-    {"nome": "Floripa Natureza 4K", "logo": "🏝️", "url": "https://test-streams.mux.dev/bbb-test/card.m3u8"},
+    {"nome": "Big Buck Bunny", "logo": "🎬", "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"},
+    {"nome": "Floripa Natureza", "logo": "🏝️", "url": "https://test-streams.mux.dev/bbb-test/card.m3u8"},
     {"nome": "Teste Ao Vivo", "logo": "📺", "url": "https://test-streams.mux.dev/test_001/stream.m3u8"},
   ];
-
-  @override
-  Widget build(BuildContext context) {
+  @override Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF0A0E1A),
       appBar: AppBar(title: Text("FLORIPA TV", style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: Colors.black, centerTitle: true),
@@ -28,7 +26,7 @@ class _FloripaTVState extends State<FloripaTV> {
           child: ListTile(
             leading: Text(canais[i]['logo']!, style: TextStyle(fontSize: 30)),
             title: Text(canais[i]['nome']!, style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text("AO VIVO - Clique para ver", style: TextStyle(color: Colors.greenAccent, fontSize: 12)),
+            subtitle: Text("AO VIVO", style: TextStyle(color: Colors.greenAccent, fontSize: 12)),
             trailing: Icon(Icons.play_circle_fill, color: Colors.blueAccent, size: 40),
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Player(url: canais[i]['url']!, nome: canais[i]['nome']!))),
           ),
@@ -45,18 +43,15 @@ class Player extends StatefulWidget {
 }
 class _PlayerState extends State<Player> {
   late VideoPlayerController v;
-  ChewieController? c;
+  ChewieController? chewie;
   @override void initState() {
     super.initState();
-    v = VideoPlayerController.network(widget.url)
-      ..initialize().then((_) {
-        setState(() {
-          c = ChewieController(videoPlayerController: v, autoPlay: true, isLive: true);
-        });
-      });
+    v = VideoPlayerController.network(widget.url)..initialize().then((_) {
+      setState(() { chewie = ChewieController(videoPlayerController: v, autoPlay: true, isLive: true); });
+    });
   }
-  @override void dispose() { v.dispose(); c?.dispose(); super.dispose(); }
+  @override void dispose() { v.dispose(); chewie?.dispose(); super.dispose(); }
   @override Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text(widget.nome)), body: Center(child: c != null ? Chewie(controller: c!) : CircularProgressIndicator()));
+    return Scaffold(appBar: AppBar(title: Text(widget.nome)), body: Center(child: chewie != null ? Chewie(controller: chewie!) : CircularProgressIndicator()));
   }
 }
