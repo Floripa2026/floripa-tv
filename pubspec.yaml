@@ -1,4 +1,17 @@
+name: floripa_tv
+description: Floripa TV IPTV
+publish_to: 'none'
+version: 1.0.0+9
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
 dependencies:
   flutter:
-  video_player:
-  chewie:
+    sdk: flutter
+  video_player: ^2.8.2
+  chewie: ^1.7.5
+  url_launcher: ^6.2.5
+
+flutter:
+  uses-material-design: true
